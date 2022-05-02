@@ -1,4 +1,4 @@
-package com.arhiser.todolist.screens.main;
+package com.arhiser.todolist.screens.details;
 
 import android.app.Activity;
 import android.graphics.Paint;
@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,13 +17,14 @@ import androidx.recyclerview.widget.SortedList;
 import com.arhiser.todolist.App;
 import com.arhiser.todolist.R;
 import com.arhiser.todolist.model.Note;
-import com.arhiser.todolist.screens.details.NoteDetailsActivity;
 
 import java.util.List;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.NoteViewHolder> {
 
     private SortedList<Note> sortedList;
+
+
 
     public Adapter() {
 
@@ -75,6 +77,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.NoteViewHolder> {
     public NoteViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new NoteViewHolder(
                 LayoutInflater.from(parent.getContext()).inflate(R.layout.item_note_list, parent, false));
+
     }
 
     @Override
@@ -99,7 +102,11 @@ public class Adapter extends RecyclerView.Adapter<Adapter.NoteViewHolder> {
 
         Note note;
 
+        ImageView red,blue,green;
+
         boolean silentUpdate;
+
+
 
         public NoteViewHolder(@NonNull final View itemView) {
             super(itemView);
@@ -107,6 +114,24 @@ public class Adapter extends RecyclerView.Adapter<Adapter.NoteViewHolder> {
             noteText = itemView.findViewById(R.id.note_text);
             completed = itemView.findViewById(R.id.completed);
             delete = itemView.findViewById(R.id.delete);
+            red=itemView.findViewById(R.id.red_tag);
+            blue=itemView.findViewById(R.id.blue_tag);
+            green=itemView.findViewById(R.id.green_tag);
+
+            int tagg = Single.getInstance().tag;
+            switch (tagg){
+                case(1):
+                    red.setVisibility(View.VISIBLE);
+                    break;
+                case(2):
+                    blue.setVisibility(View.VISIBLE);
+                    break;
+                case(3):
+                    green.setVisibility(View.VISIBLE);
+                    break;
+
+            }
+
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -134,6 +159,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.NoteViewHolder> {
             });
 
         }
+
 
         public void bind(Note note) {
             this.note = note;

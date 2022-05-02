@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.RadioButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,15 +21,21 @@ import com.arhiser.todolist.model.Note;
 public class NoteDetailsActivity extends AppCompatActivity {
 
     private static final String EXTRA_NOTE = "NoteDetailsActivity.EXTRA_NOTE";
+    private static int tag;
 
     private Note note;
 
     private EditText editText;
 
+    private RadioButton t1,t2,t3;
+
+
     public static void start(Activity caller, Note note) {
         Intent intent = new Intent(caller, NoteDetailsActivity.class);
+
         if (note != null) {
             intent.putExtra(EXTRA_NOTE, note);
+
         }
         caller.startActivity(intent);
     }
@@ -35,6 +43,8 @@ public class NoteDetailsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
 
         setContentView(R.layout.activity_note_details);
 
@@ -47,12 +57,46 @@ public class NoteDetailsActivity extends AppCompatActivity {
 
         editText = findViewById(R.id.text);
 
+        t1 = findViewById(R.id.t1);
+        t2 = findViewById(R.id.t2);
+        t3 = findViewById(R.id.t3);
+
+
+
+        t1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new Single().getInstance().tag = 1;
+            }
+        });
+
+        t2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tag=2;
+                new Single().getInstance().tag = 2;
+            }
+        });
+
+        t3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tag=3;
+                new Single().getInstance().tag = 3;
+            }
+        });
+
+        Intent intentAd = new Intent(NoteDetailsActivity.this, Adapter.class);
+        intentAd.putExtra("TAG", tag);
+
         if (getIntent().hasExtra(EXTRA_NOTE)) {
             note = getIntent().getParcelableExtra(EXTRA_NOTE);
             editText.setText(note.text);
         } else {
             note = new Note();
         }
+
+
     }
 
     @Override
@@ -60,6 +104,8 @@ public class NoteDetailsActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_details, menu);
         return super.onCreateOptionsMenu(menu);
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -83,4 +129,6 @@ public class NoteDetailsActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 }
